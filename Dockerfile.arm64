@@ -1,0 +1,4 @@
+FROM ORIGIN_IMAGE as BUILD
+FROM nginx:1.15
+COPY --from=BUILD /home/fe/PROJECT_NAME /home/fe/PROJECT_NAME
+COPY --from=BUILD /etc/nginx/conf.d /etc/nginx/conf.d

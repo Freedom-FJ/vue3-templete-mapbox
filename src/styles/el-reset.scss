@@ -1,0 +1,29 @@
+/* stylelint-disable selector-class-pattern */
+// 按钮默认样式修改，最小宽度80px，间距8px
+.el-button {
+    min-width: 80px;
+}
+
+.el-button + .el-button {
+    margin-left: 8px;
+}
+
+// 单选按钮small尺寸下最小宽度和高度修改
+.el-radio-button--small .el-radio-button__inner {
+    min-width: 64px;
+    padding: 7px 11px;
+}
+
+// 输入框高度修改
+.el-input--small .el-input__inner {
+    --el-input-inner-height: 28px;
+}
+
+// 级联选择器默认样式修改，最小宽度144px, 高度400px
+.el-cascader-menu {
+    min-width: 144px;
+}
+
+.el-cascader-menu__wrap.el-scrollbar__wrap {
+    height: 400px;
+}

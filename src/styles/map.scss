@@ -1,0 +1,224 @@
+.country-marker-content {
+    text-align: center;
+}
+
+.country-marker {
+    display: flex;
+    align-items: center;
+}
+
+.country-marker-left {
+    z-index: 9;
+    width: 43px;
+    height: 24px;
+
+    /* top left = left top = 0 0中心点偏移量 */
+    margin-right: -28px;
+    background: linear-gradient(180deg, #f3b60f 0%, #f4850d 100%);
+    border-radius: 4px;
+    transform: perspective(4px) scale(1, 1.5) rotateX(-5deg);
+
+    /* 镜头距离元素表面的位置为8px，x轴为1.1倍y轴为1.3倍，绕x轴旋转-5度 */
+    transform-origin: top left;
+
+    /* 设置圆角 */
+}
+
+.country-marker-left-big {
+    z-index: 9;
+    width: 70px;
+    height: 20px;
+
+    /* top left = left top = 0 0中心点偏移量 */
+    margin-right: -28px;
+    background: linear-gradient(180deg, #f3b60f 0%, #f4850d 100%);
+    border-radius: 4px;
+    transform: perspective(4px) scale(1, 1.5) rotateX(-3deg) translateY(-1px);
+
+    /* 镜头距离元素表面的位置为8px，x轴为1.1倍y轴为1.3倍，绕x轴旋转-5度 */
+    transform-origin: top left;
+
+    /* 设置圆角 */
+}
+
+.country-left-inner-big {
+    position: absolute;
+    top: 6px;
+    left: 13px;
+    z-index: 10;
+    font-family: TRENDS;
+    font-size: 16px;
+}
+
+.right-arrow-map {
+    width: 4px;
+    height: 4px;
+    margin-left: 5.5px;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+    transform: rotate(-45deg);
+}
+
+.country-left-inner {
+    position: absolute;
+    top: 4px;
+    left: 10px;
+    z-index: 10;
+    font-family: TRENDS;
+    font-size: 16px;
+}
+
+.country-marker-right {
+    min-width: 101px;
+    height: 32px;
+    background: rgba(0, 19, 27, 0.8);
+    border: 1px solid #00b7ff;
+    border-radius: 4px;
+    transform: perspective(10px) scale(1, 1.2) rotateX(4deg);
+
+    /* 镜头距离元素表面的位置为8px，x轴为1.1倍y轴为1.3倍，绕x轴旋转-5度 */
+    transform-origin: bottom right;
+
+    /* 设置圆角 */
+
+    /* top left = left top = 0 0中心点偏移量 */
+}
+
+.country-right-inner {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-family: TRENDS;
+    font-size: 16px;
+}
+
+.mapboxgl-popup-content {
+    background-color: transparent !important;
+}
+
+.mapboxgl-popup-tip {
+    opacity: 0;
+}
+
+/* 控制器样式 */
+.nearby-search-control {
+    position: absolute;
+    z-index: 990;
+    width: 24px;
+    height: 20px;
+    font-size: 12px;
+    line-height: 24px;
+    color: #fff;
+    text-align: center;
+    cursor: move;
+    background: #000;
+    border-radius: 10px;
+
+    &::before {
+        position: absolute;
+        top: 4px;
+        left: 0;
+        width: 12px;
+        height: 12px;
+        content: "";
+        background-image: url("~@assets/images/left2.svg");
+        background-repeat: no-repeat;
+        background-size: 12px 12px;
+    }
+
+    &::after {
+        position: absolute;
+        top: 4px;
+        right: 0;
+        width: 12px;
+        height: 12px;
+        content: "";
+        background-image: url("~@assets/images/right2.svg");
+        background-repeat: no-repeat;
+        background-size: 12px 12px;
+    }
+
+    .inner {
+        position: absolute;
+        top: 50%;
+        left: 25px;
+        height: 24px;
+        padding: 0 6px;
+        overflow: hidden;
+        line-height: 24px;
+        text-align: center;
+        white-space: nowrap;
+        background: #000;
+        border: 0;
+        border-radius: 100px;
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+        transform: translateY(-50%);
+    }
+
+    .inner-new {
+        position: relative;
+        width: 76px;
+        height: 24px;
+        overflow: visible;
+        cursor: pointer;
+        background-color: #000;
+        border-radius: 12px;
+
+        .el-dropdown {
+            position: relative;
+            width: 76px;
+            cursor: pointer;
+        }
+    }
+}
+
+.map-check-point {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    -webkit-transform: scale(0);
+    -webkit-animation-name: janim;
+    -webkit-animation-duration: 1.2s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-direction: normal;
+    -webkit-animation-fill-mode: forwards;
+}
+
+.map-check-point b {
+    position: absolute;
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: #f35;
+    border-radius: 50%;
+    opacity: 0.2;
+    -webkit-transform: scale(2);
+    -webkit-animation: zdjpop 1.2s infinite;
+}
+
+@keyframes janim {
+    0% {
+        -webkit-transform: scale(0);
+    }
+
+    50% {
+        -webkit-transform: scale(1.2);
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+    }
+}
+
+@keyframes zdjpop {
+    0% {
+        opacity: 0.6;
+        -webkit-transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(4);
+    }
+}

@@ -1,0 +1,695 @@
+{
+    "version": 8,
+    "metadata": {},
+    "sprite": "https://openmap.tech/icons/img",
+    "glyphs": "https://openmap.tech/fonts/{fontstack}/{range}.pbf",
+    "sources": {
+        "tdt-img": {
+            "type": "raster",
+            "tiles": [
+                "http://t0.tianditu.gov.cn/img_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=d5cbd0c27896bb8f535dc57ecef2718c"
+            ],
+            "tileSize": 256,
+            "minzoom": 0,
+            "maxzoom": 18
+        },
+        "osm": {
+            "type": "vector",
+            "tiles": ["https://openmap.tech/maps/tdt_zj_zw/{z}/{x}/{y}.mvt"]
+        },
+        "river":{
+            "type": "vector",
+            "tiles": ["https://gis-dev.fpi-inc.site/fpi-geo-server/gwc/service/wmts?layer=fpi-inc:yh_water_polygon&style=&tilematrixset=EPSG:4490&Service=WMTS&Request=GetTile&Version=1.0.0&Format=application/vnd.mapbox-vector-tile&TileMatrix={z}&TileCol={x}&TileRow={y}"]
+        },
+        "yh_ws":{
+            "type": "vector",
+            "tiles": ["https://gis-dev.fpi-inc.site/fpi-geo-server/gwc/service/wmts?layer=fpi-inc:yh_ws&style=&tilematrixset=EPSG:4490&Service=WMTS&Request=GetTile&Version=1.0.0&Format=application/vnd.mapbox-vector-tile&TileMatrix={z}&TileCol={x}&TileRow={y}"]
+        },
+        "yh_ys":{
+            "type": "vector",
+            "tiles": ["https://gis-dev.fpi-inc.site/fpi-geo-server/gwc/service/wmts?layer=fpi-inc:yh_ys&style=&tilematrixset=EPSG:4490&Service=WMTS&Request=GetTile&Version=1.0.0&Format=application/vnd.mapbox-vector-tile&TileMatrix={z}&TileCol={x}&TileRow={y}"]
+        },
+        "dem-geoserver": {
+            "type": "raster-dem",
+            "tiles": [
+                "https://gis-dev.fpi-inc.site/fpi-geo-server/gwc/service/wmts?layer=fpi-inc%3Ahz-dem&style=&tilematrixset=EPSG%3A4490&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fpng&TileMatrix={z}&TileCol={x}&TileRow={y}"
+            ],
+            "tileSize": 256,
+            "maxzoom": 15
+        }
+    },
+    "layers": [
+        {
+            "id": "sky",
+            "type": "sky",
+            "paint": {
+                "sky-type": "atmosphere",
+                "sky-atmosphere-sun": [0.0, 0.0],
+                "sky-atmosphere-sun-intensity": 15
+            }
+        },
+        {
+            "id": "tdt-img",
+            "type": "raster",
+            "source": "tdt-img",
+            "layout": {
+                "visibility": "visible"
+            },
+            "minzoom": 14
+        },
+        {
+            "id": "yh_ws",
+            "type": "fill",
+            "source": "yh_ws",
+            "source-layer": "yh_ws",
+            "layout": {
+                "visibility": "none"
+            },
+            "paint": {
+                "fill-color": "#73581C",
+                "fill-opacity": 1.0
+            }
+        },
+        {
+            "id": "yh_ys",
+            "type": "fill",
+            "source": "yh_ys",
+            "source-layer": "yh_ys",
+            "layout": {
+                "visibility": "none"
+            },
+            "paint": {
+                "fill-color": "#55F316",
+                "fill-opacity": 1.0
+            }
+        },
+        {
+            "id": "background",
+            "type": "background",
+            "layout": {
+                "visibility": "none"
+            },
+            "paint": {
+                "background-color": "#082c4d"
+            }
+        },
+        {
+            "id": "river-main",
+            "type": "fill",
+            "source": "river",
+            "source-layer": "yh_water_polygon",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "#08A9F4",
+                "fill-opacity": 0.9
+            },
+            "filter": ["in", "layer", "区级河道", "市级河道", "省级河道", "水库水域面", "湖泊水域面"],
+            "minzoom": 0,
+            "maxzoom": 20
+        },
+        {
+            "id": "river-town",
+            "type": "fill",
+            "source": "river",
+            "source-layer": "yh_water_polygon",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "#08A9F4",
+                "fill-opacity": 0.9
+            },
+            "filter": ["in", "layer", "镇街级河道"],
+            "minzoom": 12,
+            "maxzoom": 20
+        },
+        {
+            "id": "高速路",
+            "tree-path": "高速路-道路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_net_ln",
+            "minzoom": 14,
+            "filter": ["any", ["in", "fcode", "4200010313", "4200020313"]],
+            "layout": {
+                "visibility": "visible",
+                "text-field": "{name}",
+                "symbol-placement": "line",
+                "text-padding": {
+                    "stops": [
+                        [10, 1],
+                        [11, 2]
+                    ]
+                },
+                "text-allow-overlap": false,
+                "text-ignore-placement": false,
+                "text-pitch-alignment": "viewport",
+                "text-max-angle": 45,
+                "text-keep-upright": true,
+                "text-rotation-alignment": "map",
+                "symbol-spacing": 500,
+                "text-font": ["Microsoft YaHei"],
+                "text-size": {
+                    "stops": [
+                        [10, 11],
+                        [11, 13],
+                        [12, 14]
+                    ]
+                },
+                "icon-rotation-alignment": "viewport"
+            },
+            "paint": {
+                "text-halo-color": {
+                    "stops": [
+                        [10, "rgba(107, 0, 224, 1)"],
+                        [11, "rgba(83, 9, 159, 1)"],
+                        [13, "rgba(83, 9, 159, 1)"],
+                        [14, "rgba(112, 38, 189, 1)"],
+                        [16, "rgba(112, 38, 189, 1)"],
+                        [17, "rgba(87, 30, 145, 1)"]
+                    ]
+                },
+                "text-color": "rgba(255, 255, 255, 1)",
+                "text-halo-width": {
+                    "stops": [
+                        [10, 2],
+                        [11, 2],
+                        [12, 2]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "国道、快速路-标注",
+            "tree-path": "国道、快速路-道路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_net_ln",
+            "minzoom": 14,
+            "filter": ["any", ["in", "fcode", "4201010313", "4201020313", "4302000414", "4303000313"]],
+            "layout": {
+                "visibility": "visible",
+                "symbol-placement": "line",
+                "text-field": "{name}",
+                "text-font": ["Arial Unicode MS Bold"],
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "map",
+                "text-size": {
+                    "stops": [
+                        [13, 13],
+                        [14, 14]
+                    ]
+                },
+                "icon-rotation-alignment": "viewport"
+            },
+            "paint": {
+                "text-halo-color": {
+                    "stops": [
+                        [11, "rgba(134, 70, 17, 1)"],
+                        [13, "rgba(134, 70, 17, 1)"],
+                        [14, "rgba(104, 54, 13, 1)"],
+                        [16, "rgba(104, 54, 13, 1)"],
+                        [17, "rgba(70, 35, 7, 1)"],
+                        [18, "rgba(70, 35, 7, 1)"]
+                    ]
+                },
+                "text-color": {
+                    "stops": [
+                        [11, "rgba(255, 231, 159,1)"],
+                        [13, "rgba(255, 231, 159,1)"],
+                        [14, "rgba(255, 222, 102,1)"]
+                    ]
+                },
+                "text-halo-width": {
+                    "stops": [
+                        [10, 1],
+                        [12, 2]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "省道主干道-标注",
+            "tree-path": "省道主干道-道路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_net_ln",
+            "minzoom": 14,
+            "filter": ["any", ["in", "fcode", "4305010313", "4202010313"]],
+            "layout": {
+                "visibility": "visible",
+                "symbol-placement": "line",
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "map",
+                "text-field": "{name}",
+                "text-font": ["Arial Unicode MS Bold"],
+                "text-size": {
+                    "stops": [
+                        [12, 11],
+                        [13, 12]
+                    ]
+                },
+                "text-padding": 1,
+                "symbol-spacing": 800,
+                "icon-rotation-alignment": "viewport"
+            },
+            "paint": {
+                "text-halo-color": "rgba(104, 54, 13, 1)",
+                "text-color": "rgba(255, 255, 255, 1)",
+                "text-halo-width": {
+                    "stops": [
+                        [12, 1],
+                        [13, 2]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "县-标注",
+            "tree-path": "县道-道路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_net_ln",
+            "minzoom": 14,
+            "filter": ["any", ["in", "fcode", "4203010313", "4203020313", "4305020313", "4205000313", "4205010313"]],
+            "layout": {
+                "symbol-placement": "line",
+                "text-field": "{name}",
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "map",
+                "text-font": ["Arial Unicode MS Bold"],
+                "text-size": {
+                    "stops": [
+                        [14, 11],
+                        [15, 12]
+                    ]
+                },
+                "symbol-spacing": 800,
+                "icon-rotation-alignment": "viewport"
+            },
+            "paint": {
+                "text-halo-color": "rgba(104, 54, 13, 1)",
+                "text-color": {
+                    "stops": [
+                        [14, "rgba(255, 255, 255,1)"],
+                        [15, "rgba(255, 244, 130,1)"]
+                    ]
+                },
+                "text-halo-width": {
+                    "stops": [
+                        [16, 1],
+                        [17, 2]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "乡村路-标注",
+            "tree-path": "乡村路-道路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_net_ln",
+            "minzoom": 14,
+            "filter": ["any", ["in", "fcode", "4402000313", "4401000313"]],
+            "layout": {
+                "symbol-placement": "line",
+                "text-field": "{name}",
+                "text-font": ["Arial Unicode MS Bold"],
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "map",
+                "text-letter-spacing": 1,
+                "text-size": 11,
+                "icon-rotation-alignment": "viewport"
+            },
+            "paint": {
+                "text-halo-color": {
+                    "stops": [
+                        [15, "rgba(104, 54, 13, 1)"],
+                        [16, "rgba(104, 54, 13, 1)"]
+                    ]
+                },
+                "text-color": {
+                    "stops": [
+                        [6, "rgba(255, 255, 255, 1)"],
+                        [10, "rgba(255, 255, 230, 1)"]
+                    ]
+                },
+                "text-halo-width": {
+                    "stops": [
+                        [16, 1],
+                        [17, 2]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "支线-标注",
+            "tree-path": "支线-道路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_net_ln",
+            "minzoom": 14,
+            "filter": ["any", ["in", "fcode", "4305030313", "4305040313"]],
+            "layout": {
+                "symbol-placement": "line",
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "map",
+                "text-field": "{name}",
+                "text-font": ["Arial Unicode MS Bold"],
+                "text-size": 11,
+                "text-letter-spacing": 0,
+                "symbol-spacing": 500,
+                "text-padding": 0,
+                "icon-rotation-alignment": "viewport"
+            },
+            "paint": {
+                "text-halo-color": "rgba(104, 54, 13, 1)",
+                "text-halo-width": 1,
+                "text-color": "rgba(255, 255, 255, 1)"
+            }
+        },
+        {
+            "id": "其他公路-标注",
+            "tree-path": "其他公路-道路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_net_ln",
+            "minzoom": 14,
+            "filter": ["any", ["in", "fcode", "4209000313", "4208000313"]],
+            "layout": {
+                "symbol-placement": "line",
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "map",
+                "text-field": "{name}",
+                "text-font": ["Arial Unicode MS Bold"],
+                "text-size": 11,
+                "text-letter-spacing": 0,
+                "symbol-spacing": 500,
+                "text-padding": 0,
+                "icon-rotation-alignment": "viewport"
+            },
+            "paint": {
+                "text-halo-color": "rgba(104, 54, 13, 1)",
+                "text-halo-width": 1,
+                "text-color": "rgba(255, 255, 255, 1)"
+            }
+        },
+        {
+            "id": "地铁-标注",
+            "tree-path": "地铁-铁路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_lrr_ln",
+            "minzoom": 14,
+            "filter": ["all", ["in", "roadcode", "330100011", "330100021", "330100031", "330100041", "330100051", "330100061", "330100071", "330100101", "330100161", "330200011", "330200021", "330200031", "330200041", "330200051", "330200061", "330200061", "330300011", "330600011"]],
+            "layout": {
+                "visibility": "visible",
+                "symbol-placement": "line",
+                "text-rotation-alignment": "map",
+                "text-field": "{name}",
+                "text-font": ["MSYH"],
+                "text-size": 12.5,
+                "text-pitch-alignment": "viewport",
+                "icon-rotation-alignment": "viewport"
+            },
+            "paint": {
+                "text-color": "rgba(80, 80, 80, 1)",
+                "text-halo-width": 2,
+                "text-halo-color": "rgba(255, 255, 255, 1)"
+            }
+        },
+        {
+            "id": "铁路-标注",
+            "tree-path": "铁路-铁路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_lrr_ln",
+            "minzoom": 14,
+            "filter": ["all", ["in", "fcode", "4101010314", "4101020314", "4101030314"]],
+            "layout": {
+                "visibility": "visible",
+                "symbol-placement": "line",
+                "text-rotation-alignment": "map",
+                "text-field": "{name}",
+                "text-font": ["Arial Unicode MS Bold"],
+                "text-size": 11,
+                "text-pitch-alignment": "viewport",
+                "icon-rotation-alignment": "viewport"
+            },
+            "paint": {
+                "text-halo-color": "rgba(85, 85, 85, 85)",
+                "text-halo-width": 2,
+                "text-color": "rgba(255, 255, 255, 1)"
+            }
+        },
+        {
+            "id": "国道、快速路-icon",
+            "tree-path": "国道图标-道路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_net_ln",
+            "minzoom": 14,
+            "filter": ["all", ["in", "fcode", "4201010313", "4201020313"], ["has", "roadcode"]],
+            "layout": {
+                "visibility": "visible",
+                "symbol-spacing": 600,
+                "symbol-placement": "point",
+                "text-field": "{roadcode}",
+                "text-font": ["Arial Unicode MS Bold"],
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "viewport",
+                "text-size": 11,
+                "icon-image": "国道",
+                "icon-text-fit": "both",
+                "icon-text-fit-padding": [2, 2, 2, 2],
+                "icon-rotation-alignment": "viewport",
+                "icon-padding": {
+                    "stops": [
+                        [7, 20],
+                        [11, 20],
+                        [12, 2]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "rgba(247, 244, 242, 1)"
+            }
+        },
+        {
+            "id": "省道主干道-符号",
+            "tree-path": "省道主干道图标-道路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_net_ln",
+            "minzoom": 14,
+            "filter": ["all", ["in", "fcode", "4202010313"], ["has", "roadcode"]],
+            "layout": {
+                "visibility": "visible",
+                "symbol-placement": "point",
+                "symbol-spacing": 600,
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "viewport",
+                "text-field": "{roadcode}",
+                "text-font": ["Arial Unicode MS Bold"],
+                "text-size": 11,
+                "text-padding": 1,
+                "icon-image": "省道",
+                "icon-text-fit": "both",
+                "icon-text-fit-padding": [2, 2, 2, 2],
+                "icon-rotation-alignment": "viewport",
+                "icon-padding": {
+                    "stops": [
+                        [7, 20],
+                        [11, 20],
+                        [12, 60]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "rgba(255, 255, 255, 1)",
+                "text-halo-color": "rgba(255, 255, 255, 0.8)",
+                "text-halo-width": 0.1
+            }
+        },
+        {
+            "id": "高速路-标注-背景",
+            "tree-path": "高速公路图标-道路-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "tra_net_ln",
+            "minzoom": 14,
+            "maxzoom": 24,
+            "filter": ["all", ["in", "fcode", "4200010313", "4200020313"], ["has", "roadcode"]],
+            "layout": {
+                "visibility": "visible",
+                "text-field": "{roadcode}",
+                "symbol-placement": "point",
+                "text-padding": 1,
+                "text-allow-overlap": false,
+                "text-ignore-placement": false,
+                "text-pitch-alignment": "viewport",
+                "text-max-angle": 45,
+                "text-keep-upright": true,
+                "text-rotation-alignment": "viewport",
+                "symbol-spacing": 500,
+                "text-font": ["Arial Unicode MS Bold"],
+                "text-size": 11,
+                "icon-image": "高速",
+                "icon-rotation-alignment": "viewport",
+                "icon-text-fit": "both",
+                "icon-text-fit-padding": [2, 4, 2, 4],
+                "icon-padding": {
+                    "stops": [
+                        [7, 20],
+                        [11, 20],
+                        [12, 2]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "rgba(255, 255, 255, 1)",
+                "text-halo-color": "rgba(255, 255, 255, 0.8)",
+                "text-halo-width": 0.1
+            }
+        },
+        {
+            "id": "3d-buildings",
+            "source": "osm",
+            "source-layer": "res_py",
+            "type": "fill-extrusion",
+            "minzoom": 16,
+            "filter": ["all", ["in", "fcode", "3103011500", "3103012500", "3103013500", "3103020500", "3104000500", "3105000500", "3105010500", "3107000500", "3108000500", "3109000500", "3304000500", "3406010500", "3106000500", "3102000500"], ["has", "h"]],
+            "paint": {
+                "fill-extrusion-height": ["*", 1.3333, ["to-number", ["get", "h"]]],
+                "fill-extrusion-opacity": 0.9,
+                "fill-extrusion-color": "#f5f2eb"
+            }
+        },
+        {
+            "id": "地名点",
+            "tree-path": "村名-地名点-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "res_pt",
+            "minzoom": 14,
+            "filter": ["all", ["!in", "fcode", "3111030106", "3111040106", "3111050106", "7512020106"]],
+            "layout": {
+                "text-field": "{name}",
+                "visibility": "visible",
+                "symbol-placement": "point",
+                "text-size": 12,
+                "text-padding": 4,
+                "icon-text-fit": "both",
+                "icon-text-fit-padding": [3, 3, 3, 3],
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "viewport",
+                "icon-rotation-alignment": "viewport"
+            },
+            "paint": {
+                "text-halo-color": "rgba(115, 115, 22, 1)",
+                "text-color": "rgba(255, 255, 255, 0.8)",
+                "text-halo-width": 1
+            }
+        },
+        {
+            "id": "兴趣点-符号",
+            "tree-path": "符号-兴趣点-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "poi_new",
+            "minzoom": 14,
+            "filter": ["all", ["!=", "stylename", "地铁口"]],
+            "layout": {
+                "text-max-width": 8,
+                "text-field": "{name}",
+                "icon-image": "{stylename}",
+                "text-justify": "left",
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "viewport",
+                "icon-rotation-alignment": "viewport",
+                "text-size": 12,
+                "text-anchor": "left",
+                "text-offset": [0.6, 0],
+                "visibility": "visible",
+                "text-keep-upright": false
+            },
+            "paint": {
+                "text-halo-color": "rgba(115, 81, 57, 1)",
+                "text-halo-width": 1,
+                "text-color": "rgba(255, 255, 255, 1)"
+            }
+        },
+        {
+            "id": "街道",
+            "tree-path": "街道-地名点-标注",
+            "type": "symbol",
+            "source": "osm",
+            "source-layer": "res_pt",
+            "minzoom": 14,
+            "maxzoom": 22,
+            "filter": ["all", ["==", "fcode", "3111050106"], ["==", "icon", "ic_map_streets"]],
+            "layout": {
+                "text-field": "{name}",
+                "icon-image": {
+                    "stops": [
+                        [12, ""],
+                        [13, "ic_map_streets"],
+                        [14, "ic_map_2"]
+                    ]
+                },
+                "text-justify": "left",
+                "text-pitch-alignment": "viewport",
+                "text-rotation-alignment": "viewport",
+                "icon-rotation-alignment": "viewport",
+                "text-size": 12,
+                "text-anchor": {
+                    "stops": [
+                        [13, "center"],
+                        [14, "left"]
+                    ]
+                },
+                "text-offset": [0.6, 0],
+                "visibility": "visible",
+                "text-keep-upright": false,
+                "icon-padding": 2,
+                "icon-offset": [0, 0],
+                "icon-text-fit": {
+                    "stops": [
+                        [13, "both"],
+                        [14, "none"]
+                    ]
+                },
+                "icon-text-fit-padding": [2, 5, 2, 5]
+            },
+            "paint": {
+                "text-halo-color": {
+                    "stops": [
+                        [12, "rgba(255, 255, 255, 1)"],
+                        [12.9, "rgba(255, 255, 255, 1)"],
+                        [13, "rgba(255, 255, 255, 1)"],
+                        [13.9, "rgba(255, 255, 255, 1)"],
+                        [14, "rgba(255, 255, 255, 1)"]
+                    ]
+                },
+                "text-halo-width": {
+                    "stops": [
+                        [12, 0.1],
+                        [13, 0.1],
+                        [14, 0.1],
+                        [14, 0.1],
+                        [14, 0.1],
+                        [14.1, 0.1]
+                    ]
+                },
+                "text-color": "rgba(255, 255, 255, 1)"
+            }
+        }
+    ],
+    "terrain": {
+        "source": "dem-geoserver",
+        "exaggeration": 1.0
+    },
+    "id": "x04sv9tch"
+}

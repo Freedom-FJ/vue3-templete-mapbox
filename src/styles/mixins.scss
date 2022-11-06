@@ -1,0 +1,555 @@
+$color-bg-white: #fff;
+$border-color: #dcdfe6;
+$font-size-title: 22px;
+$font-size-common: 14px;
+$margin: 16px;
+$padding: 20px;
+$padding-8: 8px;
+
+// ************************
+// ********flex布局*********
+// ************************
+// 类名  .flex-center-center
+$justify: (
+    left: flex-start,
+    center: center,
+    right: flex-end,
+    between: space-between,
+    around: space-around
+);
+$align: (
+    top: flex-start,
+    center: center,
+    bottom: flex-end
+);
+
+@each $alignKey, $alignVal in $align {
+    @each $justifyKey, $justifyVal in $justify {
+        .flex-#{$justifyKey}-#{$alignKey} {
+            display: flex;
+            align-items: #{$alignVal};
+            justify-content: #{$justifyVal};
+        }
+    }
+}
+
+@mixin flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-aside {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin flex-start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.relative {
+    position: relative;
+}
+
+// flex 子
+@each $i in 1, 2, 3, 4, 5, 9 { // .flex-1
+    .flex-#{$i} {
+        flex: #{$i};
+    }
+}
+
+.flex-end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+@mixin flex-end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+@mixin flex-column-space {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flex-25 {
+    flex: 2.5;
+}
+
+.flex-15 {
+    flex: 1.5;
+}
+
+.flex-12 {
+    flex: 1.2;
+}
+
+.flex-13 {
+    flex: 1.3;
+}
+
+.flex-14 {
+    flex: 1.4;
+}
+
+.flex-n {
+    flex: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-c {
+    display: flex;
+    align-items: center;
+}
+
+.flex-c-c {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-w {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-col-r {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.flex-row-r {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.flex-son-1 {
+    & > div {
+        flex: 1;
+    }
+}
+
+.flex-bw-c {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+// ************************
+// ********文字及数字********
+// ************************
+// 基础文字
+@for $i from 12 through 20 { // .text-16
+    .text-#{$i} {
+        font-family: TRENDS;
+        font-size: #{$i}px;
+        font-weight: normal;
+        line-height: #{$i}px;
+        color: #fff;
+        letter-spacing: 0;
+    }
+}
+
+// 基础数字
+@each $i in 12, 14, 16, mid, 18, 20, 24, 28, 32, 64 {
+    .num-#{$i} {
+        font-family: Furore;
+        font-size: #{$i}px;
+        font-weight: normal;
+        line-height: #{$i}px;
+        color: #fff;
+        letter-spacing: 0;
+    }
+}
+
+.t-r {
+    text-align: right;
+}
+
+.t-son-c {
+    & > div {
+        text-align: center;
+    }
+}
+
+.t-c {
+    text-align: center;
+}
+
+// 单位
+.unit-12 {
+    font-family: TRENDS;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0;
+}
+
+.unit-14 {
+    font-family: TRENDS;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 14px;
+    color: rgba(216, 241, 255, 0.6);
+    text-align: center;
+}
+
+.unit-16 {
+    font-family: Furore;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+}
+
+.unit-18 {
+    font-family: Furore;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 18px;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+}
+
+.text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// ************************
+// **********宽高***********
+// ************************
+
+// 宽
+.w-30 {
+    width: 30%;
+}
+
+.w-35 {
+    width: 35%;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-60 {
+    width: 60%;
+}
+
+.w-65 {
+    width: 65%;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+.w-90 {
+    width: 90%;
+}
+
+.w-95 {
+    width: 95%;
+}
+
+.w-96 {
+    width: 96%;
+}
+
+.w-98 {
+    width: 98%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-fit {
+    width: fit-content;
+}
+
+// 高
+@each $i in 28, 32 { // .h-28
+    .h-#{$i} {
+        height: #{$i}px;
+    }
+}
+
+.hw-100 {
+    width: 100%;
+    height: 100%;
+}
+
+// ************************
+// ********边距相关*********
+// ************************
+
+// margin
+@each $i in 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 18, 20, 23, 24, 25, 26, 32, 34, 40 { // .mgb24
+    .mgb#{$i} {
+        margin-bottom: #{$i}px;
+    }
+}
+
+@each $i in 1, 2, 4, 8, 9, 10, 11, 12, 15, 16, 20, 24, 80 { // .mgr24: margin-right: 24px;
+    .mgr#{$i} {
+        margin-right: #{$i}px;
+    }
+}
+
+@each $i in 4, 8, 10, 12, 16, 20, 24 { // .mgt24: margin-top: 24px;
+    .mgt#{$i} {
+        margin-top: #{$i}px;
+    }
+}
+
+.mg-2 {
+    margin: 0 2px;
+}
+
+.mg-y-12 {
+    margin: 12px 0;
+}
+
+.mg-y-12-auto {
+    width: fit-content;
+    margin: 12px auto;
+}
+
+.mg-a {
+    margin: 0 auto;
+}
+
+.mg-auto {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.pd16 {
+    padding: 16px;
+}
+
+.pdr10 {
+    padding-right: 10px;
+}
+
+.pdt20 {
+    padding-top: 20px;
+}
+
+.pdt24 {
+    padding-top: 24px;
+}
+
+.pdt16 {
+    padding-top: 16px;
+}
+
+.pdt14 {
+    padding-top: 14px;
+}
+
+.pdt12 {
+    padding-top: 12px;
+}
+
+.pdt4 {
+    padding-top: 4px;
+}
+
+.pdt30 {
+    padding-top: 30px;
+}
+
+@for $i from 1 to 10 {
+    .border-#{$i} {
+        border: #{$i}px solid $border-color;
+    }
+}
+
+.tran15 {
+    transition: all 1.5s;
+}
+
+.tran12 {
+    transition: all 1.2s;
+}
+
+.tran10 {
+    transition: all 1s;
+}
+
+.tran05 {
+    transition: all 0.5s;
+}
+
+// vue transition
+//  opacity
+// 开始过渡
+.opacity-enter-from {
+    opacity: 0;
+}
+
+// 开始过渡了
+.opacity-enter-active {
+    transition: all 0.5s linear;
+}
+
+// 过渡完成
+.opacity-enter-to {
+    opacity: 1;
+}
+
+// 离开的过渡
+.opacity-leave-from {
+    opacity: 1;
+}
+
+// 离开中过渡
+.opacity-leave-active {
+    transition: all 0.5s linear;
+}
+
+// 离开完成
+.opacity-leave-to {
+    opacity: 0;
+}
+
+//   opacity-left
+// 开始过渡
+.opacity-left-enter-from {
+    left: 170px;
+    overflow: hidden;
+    opacity: 0;
+}
+
+// 开始过渡了
+.opacity-left-enter-active {
+    overflow: hidden;
+    transition: all 0.5s linear;
+}
+
+// 过渡完成
+.opacity-left-enter-to {
+    overflow: hidden;
+    opacity: 1;
+}
+
+// 离开的过渡
+.opacity-left-leave-from {
+    opacity: 1;
+}
+
+// 离开中过渡
+.opacity-left-leave-active {
+    transition: all 0.5s linear;
+}
+
+// 离开完成
+.opacity-left-leave-to {
+    left: 170px;
+    overflow: hidden;
+    opacity: 0;
+}
+
+//   opacity-right
+// 开始过渡
+.opacity-right-enter-from {
+    right: 170px;
+    overflow: hidden;
+    opacity: 0;
+}
+
+// 开始过渡了
+.opacity-right-enter-active {
+    overflow: hidden;
+    transition: all 0.5s linear;
+}
+
+// 过渡完成
+.opacity-right-enter-to {
+    overflow: hidden;
+    opacity: 1;
+}
+
+// 离开的过渡
+.opacity-right-leave-from {
+    opacity: 1;
+}
+
+// 离开中过渡
+.opacity-right-leave-active {
+    transition: all 0.5s linear;
+}
+
+// 离开完成
+.opacity-right-leave-to {
+    right: 170px;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.ro-90 {
+    transform: rotate(90deg);
+}
+
+.ro-180 {
+    transform: rotate(180deg);
+}
+
+.arrow-down-red {
+    position: relative;
+    width: 4px;
+    height: 9px;
+    margin: 0 3px;
+    background-color: #f54455;
+}
+
+.arrow-down-red::after {
+    position: absolute;
+    bottom: -4.8px;
+    left: -65%;
+    width: 0;
+    height: 0;
+    content: "";
+    border-top: 5px solid  #f54455;
+    border-right: 5px solid  transparent;
+    border-bottom: 0 solid  transparent;
+    border-left: 5px solid  transparent;
+}

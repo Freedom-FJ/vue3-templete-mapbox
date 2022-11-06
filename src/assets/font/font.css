@@ -1,0 +1,20 @@
+@font-face {
+    font-family: PangMenZhengDao;
+    font-style: normal;
+    font-weight: normal;
+    src: url("./pangmen.ttf");
+}
+
+@font-face {
+    font-family: Furore;
+    font-style: normal;
+    font-weight: normal;
+    src: url("./Furore.otf");
+}
+
+@font-face {
+    font-family: TRENDS;
+    font-style: normal;
+    font-weight: normal;
+    src: url("./shishang.ttf");
+}

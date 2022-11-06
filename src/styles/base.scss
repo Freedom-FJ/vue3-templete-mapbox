@@ -1,0 +1,53 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    background-repeat: no-repeat;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+html,
+body {
+    box-sizing: border-box;
+    height: 100%;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: normal;
+}
+
+ol,
+ul,
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* 若浏览器支持 backdrop-filter，则透明度为 50%，并启用毛玻璃 */
+@supports (-webkit-backdrop-filter: blur(30px)) or (backdrop-filter: blur(30px)) {
+    .bf-blur {
+        background-color: rgba(#000, 0.8);
+        backdrop-filter: blur(30px);
+    }
+}
+
+/* 若浏览器器不支持，则使用 MaterialDesign 的风格 */
+@supports not ((-webkit-backdrop-filter: blur(30px)) or (backdrop-filter: blur(30px))) {
+    .bf-blur {
+        background-color: rgba(#000, 0.8);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18), 0 6px 10px rgb(0, 0, 0, 0.22);
+    }
+}
