@@ -24,34 +24,27 @@ commonPanel(title="日常管控" :height='224' :subTitle='subTitle')
                 .title 上报事件
                 .today-line
                         .label 今日
-                        .value 20
+                        .value 2
                         .text /
                         .label-num 23
                         .chart(ref="upCharts")
                 .year-line
                         .year-label 年累计
-                        .year-value 10000
+                        .year-value 100
                         .year-text /
-                        .year-total 10000
+                        .year-total 100
                 .bottom-bar
                         .bar-value(:style="{ width: '70%'}")
 </template>
 
 <script lang="ts" setup name="torrent-warning">
 import dayjs from 'dayjs'
-import type { PropType } from 'vue'
-import type { countSiteTypeAndRateApiTs } from '../type'
 import { globalKey, } from '@/symbols'
 import { usePopStore, } from '@/store/popControl'
 import { getSetTreeCode } from '@/utils/treeDataUtils'
 
-import type { waterQualityPointTs } from '@/types/waterQuality'
 import service from '@/service/api'
-const props = defineProps({
-    yearWaringData: {
-        type: Array as PropType<waterQualityPointTs[]>
-    }
-})
+
 const popStore = usePopStore()
 const global = inject(globalKey)
 const data = reactive({
@@ -90,7 +83,7 @@ const getAnalysisDAta = async () => {
             'water'
         ]
     }
-    const res = await service<countSiteTypeAndRateApiTs[]>('waterControlCab/countSiteTypeAndRate', params)
+    const res = await service<any[]>('waterControlCab/countSiteTypeAndRate', params)
     const resData = res.data || []
     let totalCount = 0
     let totalDis = 0
@@ -115,7 +108,7 @@ const getDataCount = async () => {
             'water'
         ]
     }
-    const res = await service<countSiteTypeAndRateApiTs[]>('waterControlCab/countSiteTypeAndRate', params)
+    const res = await service<any[]>('waterControlCab/countSiteTypeAndRate', params)
     const resData = res.data || []
     let totalCount = 0
     let totalDis = 0
@@ -128,9 +121,6 @@ const getDataCount = async () => {
         total: totalCount,
         percent: Math.round((totalDis / totalCount) * 100)
     }
-    // data.dataList[0].total = totalCount
-    // data.dataList[0].warn = totalDis
-    // data.dataList[0].rate = Math.round((totalDis / totalCount) * 100)
 }
 const getChartData = (dom: HTMLElement, pie: { done: number; total: number }) => {
     const pieData = pie.total
