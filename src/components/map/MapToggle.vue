@@ -2,12 +2,12 @@
  * @Author: mjh
  * @Date: 2022-09-07 10:00:47
  * @LastEditors: mjh
- * @LastEditTime: 2022-11-04 15:56:42
+ * @LastEditTime: 2022-11-06 21:05:17
  * @Description:
 -->
 <template lang="pug">
 transition(name="opacity")
-    .map-toggle.bf-blur(v-show="!popStore.getCurrentPop")
+    .map-toggle.bf-blur(v-show="!popStore.getCurrentPop" style="height: 36px;")
         .map-bg
         .toggle
             .item(v-for='item, index in changeList' :class='modelValue === index ? "active" : ""' :key="item" @click="change(index)") {{item}}
@@ -57,24 +57,29 @@ const { changeList } = toRefs(data)
 
     .toggle {
         position: absolute;
-        left: 32px;
+        left: 0;
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        padding: 0 10%;
 
         .item {
-            width: 72px;
-            height: 36px;
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
             font-family: TRENDS;
             font-size: 16px;
-            line-height: 36px;
-            text-align: center;
+            line-height: 16px;
             cursor: pointer;
         }
 
         .active {
             /* stylelint-disable-next-line max-line-length */
-            /* stylelint-disable-next-line color-function-notation */
-            background: radial-gradient(49% 49% at 50% 0%, rgb(0 126 255 / 0.7) 0%, rgb(0 126 255 / 0.19) 47%, rgb(0 126 255 / 0) 84%), radial-gradient(50% 50% at 50% 100%, #007eff 0%, rgb(0 48 97 / 0) 100%), linear-gradient(90deg, rgb(0 48 97 / 0) 0%, #003061 50%, rgb(0 48 97 / 0) 99%);
+            background: radial-gradient(49% 49% at 50% 0%, rgb(0, 126, 255, 0.7) 0%, rgb(0, 126, 255, 0.19) 47%, rgb(0, 126, 255, 0) 84%), radial-gradient(50% 50% at 50% 100%, #007eff 0%, rgb(0, 48, 97, 0) 100%), linear-gradient(90deg, rgb(0, 48, 97, 0) 0%, #003061 50%, rgb(0, 48, 97, 0) 99%);
         }
     }
 }

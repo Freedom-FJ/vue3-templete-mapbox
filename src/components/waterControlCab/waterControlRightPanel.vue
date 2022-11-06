@@ -1,16 +1,16 @@
 <!--
  * @Author: mjh
  * @Date: 2022-09-12 20:49:43
- * @LastEditors: Tian
- * @LastEditTime: 2022-10-11 08:48:32
+ * @LastEditors: mjh
+ * @LastEditTime: 2022-11-06 21:35:05
  * @Description:
 -->
 <template lang="pug">
 el-scrollbar.right-panel
-    FloodIntelligence.mgb20
-    waterlogging-discharge.mgb20
-    smart-water-supply.mgb20
-    water-saving-wisdom
+    DailyControl.mgb20
+    WaterloggingDischarge.mgb20
+    SmartWaterSupply.mgb20
+    WaterSavingWisdom
 </template>
 
 <script lang="ts" setup name="water-control-right-panel">

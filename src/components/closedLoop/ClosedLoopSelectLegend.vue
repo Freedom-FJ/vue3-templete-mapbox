@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-09-08 15:54:29
  * @LastEditors: mjh
- * @LastEditTime: 2022-10-19 09:29:17
+ * @LastEditTime: 2022-11-06 20:58:41
  * @Description:
 -->
 <template>
@@ -130,10 +130,8 @@ const { selectRiverList, selectYearList, selectAreaList } = toRefs(data)
     }
 
     .curr-check {
-        // color: #85b7ff;
         /* stylelint-disable-next-line max-line-length */
-        /* stylelint-disable-next-line color-function-notation */
-        background: radial-gradient(49% 49% at 50% 0%, rgb(0 126 255 / 0.7) 0%, rgb(0 126 255 / 0.19) 47%, rgb(0 126 255 / 0) 84%), radial-gradient(50% 50% at 50% 100%, #007eff 0%, rgb(0 48 97 / 0) 100%), linear-gradient(90deg, rgb(0 48 97 / 0) 0%, #003061 50%, rgb(0 48 97 / 0) 99%);
+        background: radial-gradient(49% 49% at 50% 0%, rgb(0, 126, 255, 0.7) 0%, rgb(0, 126, 255, 0.19) 47%, rgb(0, 126, 255, 0) 84%), radial-gradient(50% 50% at 50% 100%, #007eff 0%, rgb(0, 48, 97, 0) 100%), linear-gradient(90deg, rgb(0, 48, 97, 0) 0%, #003061 50%, rgb(0, 48, 97, 0) 99%);
     }
 }
 </style>

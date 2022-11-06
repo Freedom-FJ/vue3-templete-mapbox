@@ -2,17 +2,12 @@
  * @Author: mjh
  * @Date: 2022-10-08 16:24:18
  * @LastEditors: mjh
- * @LastEditTime: 2022-10-11 19:25:25
+ * @LastEditTime: 2022-11-06 21:09:10
  * @Description:
 -->
 <template lang="pug">
 el-scrollbar.left-boxs(ref="letDom")
-    commonPanel(title="污水智治" :subTitle='subTitle' panelBg='panel-big' :height='936' :bigBgTop="14" :style="{marginBottom: pxToRem(16)}")
-        template(#mainContent)
-            intelligent-pollution-control
-    //- commonPanel(title="洪水智防" subTitle='（最新）' panelBg='panel-big' :height='208' :bigBgTop="14")
-    //-     template(#mainContent)
-    //-         flood-intelligence
+    intelligent-pollution-control
 </template>
 
 <script lang="ts" setup>

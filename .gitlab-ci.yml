@@ -1,0 +1,57 @@
+include:
+- project: 'product/atmosphere-products/agms/ci-templates'
+  file: '/Devops.gitlab-ci.yml'
+
+- project: 'product/atmosphere-products/agms/ci-templates'
+  file: '/Sonar-Check-JS.gitlab-ci.yml'
+
+- project: 'product/atmosphere-products/agms/ci-templates'
+  file: 'Build-Nodejs-Node8-Multi.gitlab-ci.yml'
+
+- project: 'product/atmosphere-products/agms/ci-templates'
+  file: '/Deploy-Development-Env.gitlab-ci.yml'
+
+- project: 'product/atmosphere-products/agms/ci-templates'
+  file: '/Deploy-Testing-Env.gitlab-ci.yml'
+
+- project: 'product/atmosphere-products/agms/ci-templates'
+  file: '/Tag.gitlab-ci.yml'
+
+#build_x86_docker_images:
+#  stage: build
+#  image: registry.fpi-inc.site/library/node-dind:12-alpine
+#  script:
+#  - yarn config set registry https://registry.npm.taobao.org
+#  - yarn install
+#  - yarn build
+#  - build ./dist
+#  cache:
+#    paths:
+#    - ./node_modules
+#    - ./yarn.lock
+#  only:
+#  - branches   #所有分支触发push时都需要构建
+#  except:
+#  - tags   #通常是对已经测试通过的镜像打tag，所以不需要再次编译镜像
+
+build_x86_docker_images:
+  stage: build
+  image: registry.fpi-inc.site/library/node-dind:16.14.0-alpine
+  script:
+    - yarn config set registry https://registry.npm.taobao.org
+    - yarn config set ignore-engines true
+    #- yarn config set registry http://nexus.fpi-inc.site/repository/npm-group/
+    - npm install
+    - if ! yarn theme:generateNoWatch; then echo "Command \"theme:generateNoWatch\" not found, skip..."; fi #某些项目不能执行yarn theme:generateNoWatch命令，因此做了兼容
+    - yarn run build
+    - build_node_x86 ./dist
+  cache:
+    paths:
+      - ./node_modules
+      - ./yarn.lock
+  only:
+    - master   #只有并入master才打包；减少重复打包
+  except:
+    - tags   #通常是对已经测试通过的镜像打tag，所以不需要再次编译镜像
+  tags:
+    - x86

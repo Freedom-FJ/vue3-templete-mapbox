@@ -45,7 +45,7 @@ declare module '@vue/runtime-core' {
     CombinedActionSupervision: typeof import('./src/components/closedLoop/closedLoopSupervision/right/CombinedActionSupervision.vue')['default']
     CommonChart: typeof import('./src/components/map/commonMapPop/components/CommonChart.vue')['default']
     CommonPanel: typeof import('./src/components/common/CommonPanel.vue')['default']
-    DailyControl: typeof import('./src/components/sewageTreatment/waterQuality/right/DailyControl.vue')['default']
+    DailyControl: typeof import('./src/components/waterControlCab/right/DailyControl.vue')['default']
     DailyControlParkDetail: typeof import('./src/components/sewageTreatment/parkDetail/right/DailyControlParkDetail.vue')['default']
     DailyControlSewage: typeof import('./src/components/sewageTreatment/sewageDisposal/right/DailyControlSewage.vue')['default']
     DischargeMonitoring: typeof import('./src/components/sewageTreatment/outletAnalysis/left/DischargeMonitoring.vue')['default']

@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-08-29 09:17:57
  * @LastEditors: mjh
- * @LastEditTime: 2022-11-04 15:54:18
+ * @LastEditTime: 2022-11-06 21:32:38
  * @Description:
 -->
 <template>
@@ -10,7 +10,7 @@
         <water-control-left-panel class="tran05" :class="[popStore.getCurrentPop ? 'fold-panel-left' : '']" style="z-index: 10;" />
         <water-control-right-panel class="tran05" :class="[popStore.getCurrentPop ? 'fold-panel-right' : '']" style="z-index: 10;" :waring-data-list="waringDataList" />
         <MapToggle v-model="currPointType" />
-        <early-warning-statistics v-if="showPanel" @change-type="changeType" /><transition :name="getPopCom.transition">
+        <transition :name="getPopCom.transition">
             <component :is="WaterControlCabPopCmp[getPopCom.name]" style="z-index: 9;" />
         </transition>
     </div>
