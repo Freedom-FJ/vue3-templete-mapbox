@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-09-13 17:29:30
  * @LastEditors: mjh
- * @LastEditTime: 2022-09-20 16:06:30
+ * @LastEditTime: 2022-11-09 19:49:16
  * @Description:
  */
 export interface alarmListTs {
@@ -13,15 +13,6 @@ export interface alarmListTs {
     totalCount: number
 }
 
-// export interface alarmListDataTs {
-//     alarmLevelName: string
-//     alarmLevelCode: string
-//     alarmLevelColor: string
-//     doingNum: number
-//     doneNum: number
-//     totalNum: number
-//     undoneNum: number
-// }
 export interface alarmListDataTs {
     factorName: string
     factorValue: string

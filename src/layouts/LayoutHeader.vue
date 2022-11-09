@@ -77,7 +77,7 @@ const navData: NavDataType = reactive({
                 { name: '排污口溯源', src: '/OutletAnalysis', index: 9, isShow: false, headTitle: '排污口溯源', isShowSubList: false },
             ]
         },
-        { name: '洪水智防', headTitle: '洪水智防', src: '/FloodIntelligence', index: 2, coutTypeIndex: 2 },
+        { name: '洪水智防', headTitle: '洪水智防', src: '/closedLoop/ClosedLoopManagement', index: 2, coutTypeIndex: 2 },
         { name: '涝水智排', headTitle: '涝水智排', src: '/WaterloggingDischarge', index: 3, coutTypeIndex: 3 },
         { name: '供水智保', headTitle: '供水智保', src: '/WaterSupply', index: 4, coutTypeIndex: 4 },
         { name: '节水智抓', headTitle: '节水智抓', src: '/WaterSaving', index: 5, coutTypeIndex: 5 },
@@ -176,19 +176,6 @@ const navData: NavDataType = reactive({
 })
 
 /**
- *
- * @param index 索引
- * @desc 切换菜单
- */
-const changeNav = (item: typeof navData.leftNavList[0]) => {
-    navData.activeIndex = item.index
-    // 添加判断，如果有子菜单，跳转至第一个
-    if (item.sub?.length)
-        router.push(`/${item.src}/${item.sub[item.src === 'sewageTreatment' ? 1 : 0].src}`)
-    else
-        router.push(`/${item.src}`)
-}
-/**
  * @name: 二级菜单点击
  * @param {*} item
  */
@@ -271,22 +258,6 @@ watch(() => analysisStore.getAnalysisData, (val) => {
     if (val.type) {
         const path = router.currentRoute.value.path
         if (path.includes('OutletAnalysis') && analysisStore.traceability.type) return
-        !path.includes(val.type)
-        && router.push({
-            path: `/sewageTreatment/${val.type}`,
-            // query: val.data
-        })
-    }
-    else {
-        router.go(-1)
-    }
-}, { deep: true })
-/**
- * 分析溯源
- */
-watch(() => analysisStore.traceability, (val) => {
-    if (val.type) {
-        const path = router.currentRoute.value.path
         !path.includes(val.type)
         && router.push({
             path: `/sewageTreatment/${val.type}`,

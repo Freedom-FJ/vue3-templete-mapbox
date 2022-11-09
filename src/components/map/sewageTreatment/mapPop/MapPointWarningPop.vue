@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-09-06 10:32:34
  * @LastEditors: mjh
- * @LastEditTime: 2022-10-11 16:17:06
+ * @LastEditTime: 2022-11-06 21:49:43
  * @Description:
 -->
 <template lang="pug">
@@ -26,9 +26,6 @@ div
                     .count-tips
                         .tips-label 橙色预警
                         .tips-num {{countObj.orange}}
-                    .count-tips
-                        .tips-label 红色预警
-                        .tips-num {{countObj.red}}
             .table-box
                 popup-table(:option="option" ref="popupTableDom"  :data="tableData" :height="170" :lineStyle="{ height: '32px'}"  :heightLineStyle="{ height: '28px'}" )
                 el-pagination( layout="prev, pager, next" :total="pageTotal" :page-size="5" @current-change="currentChange" style="margin: -5px auto;width: fit-content;")
