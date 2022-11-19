@@ -1,16 +1,14 @@
 /*
  * @Author: Tian
  * @Date: 2022-09-05 19:48:57
- * @LastEditors: Tian
- * @LastEditTime: 2022-10-08 10:12:17
+ * @LastEditors: mjh
+ * @LastEditTime: 2022-11-13 22:19:01
  * @Description:
  */
 import MapUtil from '@/utils/map/mapUtils'
 import { registerMapboxClickEvent } from '@/utils/map/mapPoint'
 import type { mapPopName } from '@/types/map'
 import { useMapStore } from '@/store/map'
-// const mapStore = useMapStore()
-// console.log(mapStore, 'dddddd')
 /**
  * @name: 传统绘制地图点位方法
  * @param {Record} data 点位数据
@@ -25,12 +23,6 @@ export const setMapPoint = (data: Record<string, any>[], imgPath: string, imgLis
     // 构造GeoJson数据
     const dataJson = MapUtil._getCommonGeoJson()
     data.forEach((point: Record<string, any>) => {
-        // 视频点位需要判断是否在余杭区域内
-        // if (type === 'camera') {
-        //     const inHZ = MapUtil._booleanPointInPolygon([parseFloat(point.longitude), parseFloat(point.latitude)])
-        //     if (!inHZ) return
-        // }
-
         const feature = {
             type: 'Feature',
             properties: {

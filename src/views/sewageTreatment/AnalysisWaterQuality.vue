@@ -2,7 +2,7 @@
  * @Author: Tian
  * @Date: 2022-09-06 08:57:18
  * @LastEditors: mjh
- * @LastEditTime: 2022-10-11 19:38:20
+ * @LastEditTime: 2022-11-09 20:21:39
  * @Description:
 -->
 
@@ -25,9 +25,7 @@ import WaterQualityPopCmp from '@/components/sewageTreatment/analysisWaterQualit
 import MapUtil from '@/utils/map/mapUtils'
 import { usePopStore } from '@/store/popControl'
 import { useAnalysisStore } from '@/store/analysis'
-import { globalKey } from '@/symbols'
 
-const global = inject(globalKey)
 const analysisStore = useAnalysisStore()
 const popStore = usePopStore()
 popStore.initPop() // 初始化面板弹框数据

@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-09-06 09:21:32
  * @LastEditors: mjh
- * @LastEditTime: 2022-09-11 20:02:47
+ * @LastEditTime: 2022-11-13 22:18:14
  * @Description:
  */
 module.exports = {
@@ -28,7 +28,8 @@ module.exports = {
         'eslint-comments/no-unlimited-disable': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
         'vue/custom-event-name-casing': 'off',
-        'no-async-promise-executor': 'off'
+        'no-async-promise-executor': 'off',
+        'symbol-description': 'off'
         //     ['error',
         //     'kebab-case',
         //     {

@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-09-26 18:38:55
  * @LastEditors: mjh
- * @LastEditTime: 2022-11-04 15:48:35
+ * @LastEditTime: 2022-11-09 20:38:20
  * @Description:
 -->
 <template lang="pug">
@@ -15,7 +15,7 @@ import { cloneDeep } from 'lodash-es'
 import type { mapPointNewLayerTs } from '@/types/common'
 import { drawCommonPoint, getAllPoint, preloadImageAnalysis } from '@/utils/map/mapPoint'
 import { useMapStore } from '@/store/map'
-import { getAllWarningPoint } from '@/views/sewageTreatment/analysisMap'
+import { staticDataPoint } from '@/views/staticData'
 import { getSetTreeCode } from '@/utils/treeDataUtils'
 import type { MainParams, returnPointTypeDataTs } from '@/utils/map/mapPoint'
 import { layerDictionaries } from '@/utils/map/layerSource'
@@ -135,26 +135,12 @@ const initLayer = async () => {
  * @desc: 绘制的图标是原点
  */
 const getAnalysisData = async () => {
-    if (!data.layerData) return
-    const staticUse = {
-        longitude: Number(analysisStore.analysis.data.longitude),
-        latitude: Number(analysisStore.analysis.data.latitude),
-        distance: analysisStore.analysis.distance,
-        alarmTime: Number(analysisStore.analysis.data.dataTime),
-        queryTimeType: analysisStore.analysis.data.timeType || '',
+    const layerData = {
+        code: '1',
+        name: '点位',
+        data: staticDataPoint
     }
-    const layerData = await getAllWarningPoint(data.layerData, staticUse)
-    // 当水质研判分析时需要使用地图点位数据的汇总
-    if (data.routerPath === '/sewageTreatment/AnalysisWaterQuality') {
-        const pointData = layerData.map((item) => {
-            return item.data.map(deepItem => deepItem.id)
-        }).flat(1).join(',')
-        const accessCodeList = layerData.map((item) => {
-            return item.data.map(deepItem => deepItem.accessCode)
-        }).flat(1).join(',')
-        analysisStore.upDataDetail({ pointData, accessCodeList })
-    }
-    drawCommonPoint(layerData, layerDictionaries.ANALYSIS_DISTANCE_POINT, undefined, false)
+    drawCommonPoint([layerData], layerDictionaries.ANALYSIS_DISTANCE_POINT, undefined, false)
 }
 /**
  * @name: 手工自动筛选
@@ -172,7 +158,7 @@ const fiterMapData = () => {
     const layerData: returnPointTypeDataTs = cloneDeep(data.rememberLayerData)
     data.controlLevelList.length !== 6 && layerData.forEach((item) => {
         if (['1', '40', 'border', '58'].includes(item.code.toString()))
-            item.data = item.data.filter(layer => layer.level ? data.controlLevelList.includes(layer.level) : false)
+            item.data = item.data.filter((layer: any) => layer.level ? data.controlLevelList.includes(layer.level) : false)
     })
     drawCommonPoint(layerData, layerDictionaries.MAP_COMMON_POINT, undefined, true)
 }

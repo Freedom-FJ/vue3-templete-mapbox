@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-08-29 09:17:57
  * @LastEditors: mjh
- * @LastEditTime: 2022-11-09 20:04:06
+ * @LastEditTime: 2022-11-09 20:36:15
  * @Description:
 -->
 <template>
@@ -23,7 +23,7 @@ import { addCountryMarker } from '@/utils/map/mapInit'
 import { drawCommonPoint, getAllPoint, setMapPointDomToImage } from '@/utils/map/mapPoint'
 import MapUtil from '@/utils/map/mapUtils'
 import type { waterQualityPointTs } from '@/types/waterQuality'
-import { staticData1 } from '@/views/staticData'
+import { staticData1, staticDataPoint } from '@/views/staticData'
 import WaterControlCabPopCmp from '@/components/waterControlCab/popup'
 import { usePopStore, } from '@/store/popControl'
 import type { mapPointNewLayerTs } from '@/types/common'
@@ -80,8 +80,12 @@ const change = async (index: number) => {
 
 const initLayer = async () => {
     if (!data.layerData) return
-    const mapData = await getAllPoint(data.layerData)
-    drawCommonPoint(mapData, layerDictionaries.ANALYSIS_EVEN_POINT, undefined, true)
+    const mapData = {
+        data: staticDataPoint,
+        name: '点位',
+        code: '1'
+    }
+    drawCommonPoint([mapData], layerDictionaries.ANALYSIS_EVEN_POINT, undefined, true)
 }
 /**
  * @name: 面板点击事件处理

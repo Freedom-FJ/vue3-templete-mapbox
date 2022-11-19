@@ -63,7 +63,7 @@ export type returnDataTs = {
 export type returnPointTypeDataTs = {
     code: strNum
     name: string
-    data: returnDataTs
+    data: any
 }[]
 
 export interface sewageReturnPointTypeDataTs {
@@ -495,6 +495,7 @@ const detailFacilities = (currCodes: mapPointNewLayerPartChildTs[], limtParams: 
  * @return {*}
  */
 export const drawCommonPoint = async (mapData: returnPointTypeDataTs, layer: string, popName?: mapPopName, idBase?: boolean) => {
+    console.log(mapData[0].data.slice(0, 15), 'mapData')
     const currPointAllList: returnDataTs = []
     for (const pointList of mapData) {
         for (const item of pointList.data) {

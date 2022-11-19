@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-09-06 09:38:02
  * @LastEditors: mjh
- * @LastEditTime: 2022-09-29 09:20:27
+ * @LastEditTime: 2022-11-09 20:19:28
  * @Description:
 -->
 <template lang="pug">
@@ -19,28 +19,15 @@ commonPanel(title="巡查服务" panelBg='panel-1' :height='376')
                     .left-box
                         img(src="@/assets/images/sewageTreatment/video.png")
                     .right-box(v-if='false')
-                        img(src="../../../../assets/images/sewageTreatment/group.png")
+                        img(src="@/assets/images/sewageTreatment/group.png")
                         .bottom-label.t-c
                             span.text-14 巡查统计
-            .bottom-box
-                .top-title.text-14.mgb16 运维巡查
-                .bottom-btn.flex-bw-c
-                    .btn.bgc-blue
-                        span.text-14 隐患数
-                        span.num-14 12
-                    .btn.bgc-yellow
-                        span.text-14 未解决
-                        span.num-14 12
-                    .btn.bgc-green
-                        span.text-14 已解决
-                        span.num-14 12
 </template>
 
 <script setup lang="ts">
 import { usePopStore } from '@/store/popControl'
 const popStore = usePopStore()
 const data = reactive({
-    value: 0,
     toggleList: [
         { name: '无人船巡查', value: '' },
         { name: '云上巡航', value: '' }
@@ -58,7 +45,7 @@ const showInspectPop = () => {
     popStore.upDatePopup({ currentPop: 'showOrHideInspectPop', popData: data.activeIndex })
 }
 
-const { value, toggleList, activeIndex } = toRefs(data)
+const { toggleList, activeIndex } = toRefs(data)
 </script>
 
 <style lang="scss" scoped>
