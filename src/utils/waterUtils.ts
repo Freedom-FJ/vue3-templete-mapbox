@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-09-14 16:18:58
  * @LastEditors: mjh
- * @LastEditTime: 2022-09-30 10:08:33
+ * @LastEditTime: 2022-11-19 17:39:50
  * @Description:
  */
 /**
@@ -121,6 +121,7 @@ export const getMapLayerList = async () => {
     if (mapStore.mapLayerList.length) return mapStore.mapLayerList
     const res = await service<record, true>('common/getMapLayer')
     const layerData = JSON.parse(res.menuConfigDetail['014'].data)
+    console.log(layerData, 'layerData')
     const layerList = layerData[0].children
     const data = layerList.filter((o: record) => {
         return o.checked

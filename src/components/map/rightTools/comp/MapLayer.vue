@@ -2,7 +2,7 @@
  * @Author: Tian
  * @Date: 2022-09-19 09:49:02
  * @LastEditors: mjh
- * @LastEditTime: 2022-10-11 19:41:09
+ * @LastEditTime: 2022-11-20 21:40:53
  * @Description:
 -->
 <template lang="pug">
@@ -13,203 +13,91 @@
             span 图层
             img(src='@/assets/images/map/close.png' @click="closePop")
         el-scrollbar.layer-list
-            .list-one(v-for='item, index in layerList' :key='index')
+            .list-one(v-for='item, index in mapStore.getMapLayer' :key='index')
                 .check-main
                     el-checkbox(
-                        v-model="checkAll[item.name]"
-                        :indeterminate="isIndeterminateObj[item.name]"
-                        @change="handleCheckAllChange($event, item.name)") {{item.name}}
-                    el-icon(:size='15' @click="foldClick(item.name)" v-if='!showObj[item.name]')
-                        ArrowDown
-                    el-icon(v-else :size='15' @click="foldClick(item.name)")
-                        ArrowUp
-                el-checkbox-group(
-                    v-model="checkedSites[item.name]"
-                    @change="handleCheckedSitesChange($event, item.name)"
-                    v-show='!showObj[item.name]'
-                )
-                    el-checkbox(v-for="station in item.children" :key="station.name" :label="station.name")
-                        .layer-item
-                            .icon(v-if='item.stationCodes && (station.iconName !== "006" && station.iconName !== "007" && station.iconName !== "009")' :style='{backgroundImage: `url(${getAssetsFile(`map/point/${station.stationCodes === "1" || station.stationCodes === "-1" ? station.iconName : station.stationCodes}.png`)})`}')
-                            .layer-name {{station.name}}
-                            //- .layer-count (23)
+                        v-model="item.isCheckAll"
+                        :indeterminate="item.indeterminate"
+                        @change="handleCheckAllChange(item)") {{item.name}}
+                    el-icon(:size='15' @click="item.isShowChild = !item.isShowChild" )
+                        ArrowDown.arrow( :class="{ 'arrow-rotate': !item.isShowChild}")
+                transition(name="height-down")
+                    .check-flow-box(v-show='item.isShowChild')
+                        el-checkbox-group(
+                            v-model="item.checkedList"
+                            @change="handleCheckedSitesChange(item)"
+                        )
+                            el-checkbox(v-for="station in item.children" :key="station.stationCodes" :label="station.stationCodes")
+                                .layer-item
+                                    .icon(v-if="currBoxImgStatus(item.stationCodes, station.stationCodes).isShow" :style='{backgroundImage: `url(${getAssetsFile(`map/point/${currBoxImgStatus(item.stationCodes, station.stationCodes).icon}.png`)})`}')
+                                    .layer-name {{station.name}}
 </template>
 
 <script lang="ts" setup name="set-map-style">
-import { cloneDeep } from 'lodash-es'
 import { useMapStore } from '@/store/map'
-import { getMapLayerList } from '@/utils/waterUtils'
-import { DataType, getAssetsFile } from '@/utils/tools'
-import service from '@/service/api'
-import { useBaseInfoStore } from '@/store/baseInfo'
+import type { LayerSelectItemTs } from '@/types/map'
+import { getAssetsFile } from '@/utils/tools'
 /**
  * 关闭弹框事件
  */
-const emit = defineEmits(['close-layer-pop', 'change-map-layer'])
+const emit = defineEmits(['close-layer-pop'])
 const mapStore = useMapStore()
-const data = reactive({
-    layerList: [] as Record<string, any>[],
-    showObj: {} as Record<string, any>,
-    checkAll: {} as Record<string, any>,
-    isIndeterminateObj: {} as Record<string, any>,
-    siteTypeListObj: {} as Record<string, any>,
-    checkedSites: {} as Record<string, any>,
+
+const currBoxImgStatus = computed(() => (fatherCode: string, childCode: string) => {
+    const defaultImgStatus = {
+        icon: '',
+        isShow: false
+    }
+    switch (true) {
+    case (fatherCode === '1' && childCode === '005'):
+    case (fatherCode === '38'):
+        break
+    case (fatherCode === '1' && childCode === '002,003,004,005,006,007'):
+        defaultImgStatus.isShow = true
+        defaultImgStatus.icon = '008'
+        break
+    case (fatherCode === '40'):
+        defaultImgStatus.isShow = true
+        defaultImgStatus.icon = fatherCode
+        break
+    default:
+        defaultImgStatus.isShow = true
+        defaultImgStatus.icon = childCode
+        break
+    }
+    return defaultImgStatus
 })
+
 const mapLayer = ref()
 
-watch(() => mapStore.controlMapLayerHandle, (val) => {
-    if (!val) return
-    getLayerData(val)
-})
 onMounted(() => {
     getHeight()
 })
 /**
  * 复选框全选
  */
-const handleCheckAllChange = (val: any, name: string) => {
-    const resultList = data.siteTypeListObj.get(name).children.map((item: Record<string, any>) => {
-        return item.name
-    })
-    data.checkedSites[name] = val ? resultList : []
-    data.isIndeterminateObj[name] = false
-    dealEmitData()
+const handleCheckAllChange = (val: LayerSelectItemTs) => {
+    val.indeterminate = false
+    if (!val.isCheckAll) {
+        val.checkedList = []
+    }
+    else {
+        const currList: string[] = []
+        val.children.forEach((child) => {
+            currList.push(child.stationCodes)
+        })
+        val.checkedList = currList
+    }
 }
 /**
  * 复选框单个选中
  */
-const handleCheckedSitesChange = (value: any[], name: string) => {
-    const checkedCount = value.length
-    data.checkAll[name] = checkedCount === data.siteTypeListObj.get(name).children.length
-    data.isIndeterminateObj[name] = checkedCount > 0 && checkedCount < data.siteTypeListObj.get(name).children.length
-    data.checkedSites[name] = value
-    dealEmitData()
-}
-/**
- * 图层选中数据处理和存储
- */
-const dealEmitData = () => {
-    const targetArr = []
-    for (const key in data.checkedSites) {
-        const ibj = {
-            name: key,
-            value: data.checkedSites[key]
-        }
-        targetArr.push(ibj)
+const handleCheckedSitesChange = (val: LayerSelectItemTs) => {
+    if (val.checkedList.length === 0 || val.checkedList.length === val.children.length) {
+        val.indeterminate = false
+        val.isCheckAll = val.checkedList.length === val.children.length
     }
-    targetArr.forEach((item: Record<string, any>) => {
-        data.layerList.forEach((data: Record<string, any>) => {
-            if (item.name === data.name && item.value.length) {
-                const list = data.children.filter((child: Record<string, any>) =>
-                    item.value.includes(child.name)
-                )
-                item.stationCodes = data.stationCodes
-                item.children = list
-            }
-        })
-    })
-    mapStore.setMapLayerSelectedSites(targetArr)
-}
-/**
- * 获取所有图层数据
- */
-const getLayerData = async (name: Arrayable<string> | Record<string, string[]>) => {
-    const res = await getMapLayerList()
-    data.layerList = res as Record<string, any>[]
-    const dataMap: Map<string, any> = new Map<string, any>()
-    data.layerList.forEach((item) => {
-        getIcon(item)
-        dataMap.set(item.name, item)
-        data.checkedSites[item.name] = []
-    })
-    data.siteTypeListObj = dataMap
-    setDefaultLayer(name)
-}
-/**
- * 获取站点数量
- */
-const getLayerCount = async () => {
-    const baseInfo = useBaseInfoStore()
-    const treeData = baseInfo.getTreeCodeData
-    Promise.all([service<Record<string, any>, true>('common/getMapLayerCount', {
-        treeType: 1,
-        treeId: '330110',
-        stationCodes: '1,2,3,5,6,8,10,12,38,40,51,52,53,54,56,57,58,59,108'
-    }), service<Record<string, any>, true>('common/getMapLayerPomsCount', {
-        treeType: 1,
-        treeId: '330110',
-        stationCodes: '-1'
-    })]).then((res) => {
-        //
-        // console.log(res, 'dddddfggggg')
-    })
-}
-getLayerCount()
-/**
- * 图标获取
- */
-const getIcon = (item: Record<string, any>) => {
-    // 添加判断：1：水环境，交接断面： border；-1：重点源、非重点源；-1,50：海洋；51,53,54,56,57：设施
-    switch (item.stationCodes) {
-    case '1':
-        item.children.forEach((child: Record<string, any>) => {
-            if (child.name.includes('断面'))
-                child.iconName = 'border'
-            else
-                child.iconName = child.attributes[0].value
-        })
-        break
-    case '-1':
-        item.children.forEach((child: Record<string, any>, index: number) => {
-            if (child.stationCodes === '-1')
-                child.iconName = `-1-${index}`
-        })
-        break
-    case '-1,50':
-        item.children.forEach((child: Record<string, any>, index: number) => {
-            if (child.stationCodes === '-1')
-                child.iconName = '-1-A'
-        })
-        break
-    case '51,53,54,56,57':
-        item.children.forEach((child: Record<string, any>) => {
-            if (child.name === '雨水管网' || child.name === '污水管网')
-                child.stationCodes = 'ps'
-            else if (child.name === '供水管网')
-                child.stationCodes = 'gs'
-        })
-        break
-    }
-}
-/**
- * 根据路由设置图层的默认选中
- */
-const setDefaultLayer = (nameOrList: Arrayable<string> | Record<string, string[]>) => {
-    // 当前全选，其他取消全选
-    for (const key in data.checkAll)
-        data.checkAll[key] = false
-    function setLayerByName(name: string) {
-        const resultList = data.siteTypeListObj.get(name).children.map((item: Record<string, any>) => {
-            return item.name
-        })
-        data.checkedSites[name] = resultList
-        data.checkAll[name] = true
-        data.isIndeterminateObj[name] = false
-    }
-    if (typeof nameOrList === 'string') {
-        setLayerByName(nameOrList)
-    }
-    else if (DataType(nameOrList, 'array')) {
-        (nameOrList as string[]).forEach((item) => {
-            setLayerByName(item)
-        })
-    }
-    else {
-        Object.keys(nameOrList).forEach((item) => {
-            data.checkedSites[item] = (nameOrList as Record<string, string[]>)[item]
-        })
-    }
-    dealEmitData()
+    else { val.indeterminate = true }
 }
 
 /**
@@ -224,18 +112,10 @@ const getHeight = () => {
     const calculateHeight = document.documentElement.clientHeight - 360
     mapLayer.value.style.height = `${calculateHeight}px`
 }
-/**
- * 点击箭头
- */
-const foldClick = (name: string) => {
-    data.showObj[name] = !data.showObj[name]
-    data.showObj = cloneDeep(data.showObj)
-}
+
 const closePop = () => {
     emit('close-layer-pop', false)
 }
-
-const { layerList, showObj, isIndeterminateObj, checkAll, checkedSites } = toRefs(data)
 </script>
 
 <style lang="scss" scoped>
@@ -257,6 +137,19 @@ const { layerList, showObj, isIndeterminateObj, checkAll, checkedSites } = toRef
 
     // background: rgba(0,0,0,0.25);
     border-radius: 8px;
+
+    .arrow {
+        transition: all 0.5s;
+    }
+
+    .arrow-rotate {
+        transform: rotate(180deg);
+    }
+
+    .check-flow-box {
+        height: auto;
+        overflow: hidden;
+    }
 
     .map-bg {
         position: absolute;

@@ -1,10 +1,12 @@
 import { getAssetsFile } from '@/utils/tools'
 import MapUtil from '@/utils/map/mapUtils'
+import { useMapStore } from '@/store/map'
+import type { LayerCodeTs, LayerSelectDataChildTs, LayerSelectDataTs, LayerSelectItemTs, LayerStaticDataTs, mapPopName } from '@/types/map'
 import { layerDictionaries } from '@/utils/map/layerSource'
 import MapPointWarningPop from '@/components/map/sewageTreatment/mapPop/MapPointWarningPop.vue'
 import AlgaeWarningPointPop from '@/components/map/sewageTreatment/mapPop/AlgaeWarningPointPop.vue'
 import WaterCommonMainPop from '@/components/map/commonMapPop/WaterCommonMainPop.vue'
-import type { mapPopName } from '@/types/map'
+import { staticLayer } from '@/views/staticData'
 export const popList = {
     MapPointWarningPop,
     AlgaeWarningPointPop,
@@ -138,37 +140,6 @@ export const addMapLayer = (map: any, dataJson: Record<string, any>, lineJson: R
         }
     }
 }
-/**
- * 添加区县marker
- */
-export const addCountryMarker = (map: any, dataJson: Record<string, any>) => {
-    dataJson.features.forEach((feature: Record<string, any>, index: number) => {
-        const el = document.createElement('div')
-        el.className = 'country-marker-content'
-        el.innerHTML = `
-        <div class='country-marker'>
-            <div class="country-marker-left" style="background: ${dataJson.features.length - index > 3 ? 'linear-gradient(180deg, #0AD4CD 0%, #00B0E1 100%)' : 'linear-gradient(180deg, #F17594 0%, #FF3737 100%)'}"></div>
-            <div class='country-left-inner'>${index + 1}</div>
-            <div class="country-marker-right"></div>
-            <div class='country-right-inner'>${feature.properties.Name}</div>
-        </div>
-        <img style='margin-top: 2px;' src="${getAssetsFile('map/point_.svg')}" />`
-        const coor = turf.centroid(feature).geometry.coordinates
-        if (!window.countryMarker) window.countryMarker = {}
-        let marker = window.countryMarker[feature.properties.Code]
-        if (marker) {
-            marker.remove()
-            marker = null
-        }
-        window.countryMarker[feature.properties.Code] = new mapboxgl.Marker(el)
-            .setLngLat([coor[0], coor[1] + 0.02])
-            .addTo(map)
-        el.addEventListener('click', (e) => {
-            e.stopPropagation()
-            showMapPop('MapPointWarningPop', feature.properties, coor)
-        })
-    })
-}
 
 // 显示地图弹框
 export const showMapPop = (popupName: mapPopName, properties: record, coordinates: number[], popId?: string) => {
@@ -178,4 +149,28 @@ export const showMapPop = (popupName: mapPopName, properties: record, coordinate
         properties,
     })
     MapUtil._showPopupOnMap(coordinates, popContent, 450, [0, -10], popId || popupName)
+}
+
+export const initLayer = async () => {
+    const layerData: LayerStaticDataTs[] = await getLayerData()
+    const layerDataObj = layerData.reduce((pre, cur) => {
+        let currData = cur as LayerSelectItemTs
+        currData = Object.assign(currData, {
+            isCheckAll: false,
+            isShowChild: true,
+            indeterminate: false,
+            checkedList: [],
+        })
+        pre[cur.stationCodes as LayerCodeTs] = currData
+        return pre
+    }, {} as LayerSelectDataTs)
+    const mapStore = useMapStore()
+    mapStore.setMapLayer(layerDataObj)
+}
+
+const getLayerData = async () => {
+    const layerData = await new Promise((resolve) => {
+        resolve(staticLayer)
+    })
+    return layerData as LayerStaticDataTs[]
 }

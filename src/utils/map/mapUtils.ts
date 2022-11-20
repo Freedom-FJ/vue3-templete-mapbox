@@ -156,11 +156,11 @@ const MapUtil = {
      * 处理将DOM元素转换为图片
      * @param {string} imgName       需要处理的DOM元素上绑定的id
      * */
-    async handleDomConversionImage(imgName: string) {
-        const imgSource = imgName
+    async handleDomConversionImage(dom: HTMLDivElement, option: { name: string; height: number; width: number }) {
+        const { name, height, width } = option
+        const imgSource = name
         if (window.glMap.hasImage(imgSource)) return
         // 获取需要下载成图片的DOM元素
-        const { dom, height, width } = this.getImgDom(imgName)
         if (!dom) return
         // 获取dom下面所有的img标签
         const imgDomArray = dom.querySelectorAll('img')
@@ -182,7 +182,6 @@ const MapUtil = {
             if (error) throw error
             !window.glMap.hasImage(imgSource) && window.glMap.addImage(imgSource, image)
         })
-        // this.downloadImage(base64, '略略大魔王')
     },
     /**
      * 将节点内的所有img标签的src转成base64

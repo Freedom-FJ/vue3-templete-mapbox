@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-08-29 09:17:57
  * @LastEditors: mjh
- * @LastEditTime: 2022-11-09 20:36:15
+ * @LastEditTime: 2022-11-20 23:31:22
  * @Description:
 -->
 <template>
@@ -19,14 +19,12 @@
 <script lang="ts" setup name="water-control">
 import dataJson from '@static/json/data.json'
 import { useMapStore } from '@/store/map'
-import { addCountryMarker } from '@/utils/map/mapInit'
-import { drawCommonPoint, getAllPoint, setMapPointDomToImage } from '@/utils/map/mapPoint'
+import { addCountryMarker, drawLayerStaticByDom } from '@/utils/map/mapPoint'
 import MapUtil from '@/utils/map/mapUtils'
 import type { waterQualityPointTs } from '@/types/waterQuality'
 import { staticData1, staticDataPoint } from '@/views/staticData'
 import WaterControlCabPopCmp from '@/components/waterControlCab/popup'
 import { usePopStore, } from '@/store/popControl'
-import type { mapPointNewLayerTs } from '@/types/common'
 import { layerDictionaries } from '@/utils/map/layerSource'
 import { globalKey } from '@/symbols'
 const global = inject(globalKey)
@@ -35,14 +33,11 @@ const mapStore = useMapStore()
 
 popStore.initPop() // 初始化面板弹框数据
 const data = reactive({
-    layerData: null as null | mapPointNewLayerTs,
+    layerData: null as null,
     currPointType: 2, // 当前点位类型
     waringDataList: [] as waterQualityPointTs[],
 })
 
-watch(() => data.currPointType, (val) => {
-    change(val)
-})
 /**
  * @desc: 监听面板点击事件
  */
@@ -60,22 +55,27 @@ onUnmounted(() => {
  * @param {*} index
  */
 const change = async (index: number) => {
-    mapStore.controlMapLayerHandle = ''
+    console.log(index, 'index')
+    mapStore.setCheckMapLayer()
     MapUtil._removeMapboxPopup()
     hideAllLayer()
-    !index && addCountryMarker(window.glMap, dataJson)
-    if (index === 1) {
+    switch (index) {
+    case 0:
+        addCountryMarker(window.glMap, dataJson)
+        break
+    case 1:
         nextTick(() => {
-            mapStore.controlMapLayerHandle = '水环境'
+            mapStore.setCheckMapLayer('1')
             initLayer()
         })
-    }
-    if (index === 2) {
+        break
+    case 2:
         await getSitePointData()
         renderEarlyWarningMarker(data.waringDataList)
+        break
+    default:
+        break
     }
-    // 手工、自动图例点位模式下才显示
-    global?.emitter.emit('showOrHideMonitorMethods', index)
 }
 
 const initLayer = async () => {
@@ -85,7 +85,6 @@ const initLayer = async () => {
         name: '点位',
         code: '1'
     }
-    drawCommonPoint([mapData], layerDictionaries.ANALYSIS_EVEN_POINT, undefined, true)
 }
 /**
  * @name: 面板点击事件处理
@@ -167,17 +166,16 @@ const renderEarlyWarningMarker = (dataList: waterQualityPointTs[]) => {
             if (item.borderSituation !== '001')
                 level = '008'
         }
-
-        const { base, type } = getPointColor(item.notDisposedCount, item.inDisposalCount, item.disposalCount)
+        const { base, type } = getPointColor(item.notDisposedCount, item.inDisposalCount)
         if (base === 'base6') checkPointList.push(coordinates)
         item.symbolImgName = `${base}-${level}`
         item.disposeType = type
     })
     MapUtil.addCheckMarker(checkPointList)
-    setMapPointDomToImage(dataList, layerDictionaries.ANALYSIS_EVEN_POINT, 'MapPointWarningPop')
+    drawLayerStaticByDom(layerDictionaries.ANALYSIS_EVEN_POINT, dataList as any)
 }
 // 根据预警数量判断点位颜色
-const getPointColor = (notDisposedCount: number, inDisposalCount: number, disposalCount: number) => {
+const getPointColor = (notDisposedCount: number, inDisposalCount: number) => {
     let base = ''; let type = 0
     if (notDisposedCount > 0) {
         base = 'base6'
@@ -200,8 +198,13 @@ const getPointColor = (notDisposedCount: number, inDisposalCount: number, dispos
 const hideAllLayer = () => {
     MapUtil._removeHtmlMarker(window.countryMarker)
     MapUtil.clearAllCheckMarker()
-    MapUtil._showOrHideMapLayerById([layerDictionaries.MAP_COMMON_POINT, layerDictionaries.ANALYSIS_EVEN_POINT, 'cab-pointer'], 'hide')
+    MapUtil._showOrHideMapLayerById([layerDictionaries.MAP_COMMON_POINT, layerDictionaries.ANALYSIS_EVEN_POINT], 'hide')
 }
+
+watch(() => data.currPointType, (val) => {
+    change(val)
+}, { immediate: true })
+
 const { waringDataList, currPointType } = toRefs(data)
 </script>
 

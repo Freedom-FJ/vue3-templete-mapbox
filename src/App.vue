@@ -2,7 +2,7 @@
  * @Author: Tian
  * @Date: 2022-05-08 18:13:26
  * @LastEditors: mjh
- * @LastEditTime: 2022-11-04 15:33:10
+ * @LastEditTime: 2022-11-20 22:55:44
  * @Description:
 -->
 
@@ -22,10 +22,10 @@ import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import { ElConfigProvider } from 'element-plus'
 import { useRouter } from 'vue-router'
 import layouts from './layouts'
-import { preloadImage } from './utils/map/mapPoint'
 import echarts from '@/utils/echarts'
 import service from '@/service/api'
-import { changeHangZhouKey, globalKey, hangZhouKey, serviceKey } from '@/symbols'
+import { initLayer } from '@/utils/map/mapInit'
+import { globalKey, serviceKey } from '@/symbols'
 import { useCommonStore, } from '@/store/common'
 import { useRouterControlStore } from '@/store/routerControl'
 const commonStore = useCommonStore()
@@ -39,23 +39,16 @@ provide(globalKey, {
     echarts,
     emitter
 })
-const closeStore = reactive({
-    token: '',
-    authorization: ''
-})
-// 杭州用户信息存放位置
-provide(hangZhouKey, closeStore)
-provide(changeHangZhouKey, (val: { token: string; authorization: string }) => {
-    Object.assign(closeStore, val)
-})
+
 const isRouterAlive = ref(true)
+initLayer()
+// 主要为了解决在mopbox上挂在的vue实例无法获取到router的问题
 watch(() => routerControlStore.getRouter, (val) => {
     router.push({ path: val.path, query: val.data })
 })
 
 // 地图模式切换刷新router
 watch(() => commonStore.getMapStyle, (val) => {
-    if (router.currentRoute.value.path === '/sewageTreatment/ParkDetail') return
     isRouterAlive.value = false
     setTimeout(() => {
         isRouterAlive.value = true
@@ -63,9 +56,8 @@ watch(() => commonStore.getMapStyle, (val) => {
 })
 onMounted(() => {
     window.glMap.on('load', () => {
-        preloadImage()
+        //
     })
-    preloadImage()
 })
 
 window.addEventListener(

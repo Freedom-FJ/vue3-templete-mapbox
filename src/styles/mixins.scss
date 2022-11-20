@@ -525,6 +525,43 @@ $align: (
     opacity: 0;
 }
 
+// 从下到到消失
+// height-to-down
+.height-down-enter-from {
+    height: 0 !important;
+    opacity: 0;
+}
+
+// 开始过渡了
+.height-down-enter-active {
+    opacity: 0.7;
+    transition: all 0.5s linear;
+}
+
+// 过渡完成
+.height-down-enter-to {
+    height: fit-content !important;
+    opacity: 1;
+}
+
+// 离开的过渡
+.height-down-leave-from {
+    height: fit-content !important;
+    opacity: 1;
+}
+
+// 离开中过渡
+.height-down-leave-active {
+    opacity: 0.7;
+    transition: all 0.5s linear;
+}
+
+// 离开完成
+.height-down-leave-to {
+    height: 0 !important;
+    opacity: 0;
+}
+
 .ro-90 {
     transform: rotate(90deg);
 }

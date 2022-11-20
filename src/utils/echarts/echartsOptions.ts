@@ -8,12 +8,6 @@ import { getWaterQualityDictionaries } from '@/utils/waterUtils'
  */
 export const getAlgaeBarOptions = (Xdata: string[], dataUp: (number | null)[], dataDown: (null | number)[]) => {
     return {
-        // tooltip: {
-        //     trigger: 'axis',
-        //     axisPointer: {
-        //         type: 'line' // 默认为直线，可选为：'line' | 'shadow'
-        //     }
-        // },
         grid: {
             left: '3%',
             right: '4%',

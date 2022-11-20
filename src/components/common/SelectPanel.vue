@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-09-01 16:27:12
  * @LastEditors: mjh
- * @LastEditTime: 2022-10-27 11:23:40
+ * @LastEditTime: 2022-11-19 22:22:16
  * @Description:
 -->
 <template>
@@ -14,7 +14,8 @@
             </div>
             <div v-if="arrow === 'box'" class="arrow-white tran05" :class="isShowOption ? 'ro-180' : ''" />
             <div v-if="arrow === 'line'" class="arrow-line tran05" :class="isShowOption ? 'arrow-line-ro' : ''" />
-        </div><transition name="height-to-down">
+        </div>
+        <transition name="height-to-down">
             <el-scrollbar v-show="isShowOption" :id="id" ref="optionListDom" class="option-list" :style="selectBoxStyle">
                 <div v-for="(item, index) in option" :key="index" class="select-item" :style="selectItemStyle" :class="[activeIndex === index ? 'select-item-check' : '']" @click="clickCurrItem(item, index)">
                     {{ item.selectLabel || item.label }}
@@ -170,9 +171,9 @@ const { isShowOption, label, activeIndex, optionListDom, id, width } = toRefs(da
 
 <style scoped lang="scss">
 // 使用变量承接
-$select-height: v-bind(selectListHeight);
-$select-min: v-bind(buttomMin);
-$select-max: v-bind(buttomMax);
+$select-height: v-bind(selectlistheight);
+$select-min: v-bind(buttommin);
+$select-max: v-bind(buttommax);
 
 .container {
     position: relative;
@@ -204,7 +205,7 @@ $select-max: v-bind(buttomMax);
             border-right: 4px solid transparent;
             border-bottom: 0 solid transparent;
             border-left: 4px solid transparent;
-            transform: scale(v-bind(arrowScale));
+            transform: scale(v-bind(arrowscale));
         }
     }
 
@@ -295,7 +296,7 @@ $select-max: v-bind(buttomMax);
         margin-left: 4px;
         border-right: 1px solid #60a2e1;
         border-bottom: 1px solid #60a2e1;
-        transform: rotate(45deg) translateY(-50%) scale(v-bind(arrowScale));
+        transform: rotate(45deg) translateY(-50%) scale(v-bind(arrowscale));
         transform-origin: center;
     }
 
