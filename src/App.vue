@@ -2,7 +2,7 @@
  * @Author: Tian
  * @Date: 2022-05-08 18:13:26
  * @LastEditors: mjh
- * @LastEditTime: 2022-11-20 22:55:44
+ * @LastEditTime: 2022-11-21 09:01:48
  * @Description:
 -->
 
@@ -11,7 +11,6 @@ el-config-provider(:locale="locale")
     #mainApp
         .shadingBg
             component(v-for="layout in layouts" :key="layout.name" :is="layout")
-            camera-dialog
             router-view(v-if="isRouterAlive")
 </template>
 
@@ -42,7 +41,8 @@ provide(globalKey, {
 
 const isRouterAlive = ref(true)
 initLayer()
-// 主要为了解决在mopbox上挂在的vue实例无法获取到router的问题
+
+// 主要为了解决在mapBox上挂在的vue实例无法获取到router的问题
 watch(() => routerControlStore.getRouter, (val) => {
     router.push({ path: val.path, query: val.data })
 })

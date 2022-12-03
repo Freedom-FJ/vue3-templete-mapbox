@@ -1,6 +1,6 @@
 /**
- *  与 地图操作、点位图层（图标点位、圆形点位、聚合点位）...相关的公共方法
- *  方法：
+ * 与 地图操作、点位图层（图标点位、圆形点位、聚合点位）...相关的公共方法
+ * 方法：
  *      _addImageToMap              添加图片资源
  *      _addSourceToMap             添加数据资源
  *      _renderMapLayer             渲染点位图层
@@ -109,48 +109,6 @@ const MapUtil = {
      */
     clearAllCheckMarker() {
         MapUtil._removeHtmlMarker(window.checkMarker)
-    },
-    /**
-     * 获取对应名称的dom
-     * @param {string} imgName       需要处理的DOM元素上绑定的id
-     * @desc 分为两类 base1-001 和 001-1
-     * base1-001 ： 底座图片-类型图片
-     * 001-1： 类型图片-等级颜色
-     * */
-    getImgDom(imgName: string) {
-        const imgNameList = imgName.split('-')
-        let height: number, width: number
-        if (imgNameList.length !== 2) {
-            console.error('图片格式错误')
-            return { dom: null, height: 0, width: 0 }
-        }
-        const el = document.createElement('div')
-        el.className = 'location-layer-marker'
-        if (imgNameList[0].includes('base')) {
-            height = 60
-            width = 37
-            const sewageBase: record = { baseSewage1: 'base3', baseSewage2: 'base6', baseSewage3: 'base7', baseSewage5: 'base5', baseSewageNone: 'base1' } // 污染源等级特殊处理
-            if (imgNameList[0].includes('Sewage')) imgNameList[0] = sewageBase[imgNameList[0]]
-            el.innerHTML = `<div style="position: relative;width: 35px;height: 60px;">
-                              <img src="${getAssetsFile(`map/point/${imgNameList[1]}.png`)}" style="position: absolute;top:5.1px;left:50%;transform: scale(1) translateX(-60%);width: 25px;"/>
-                              <img src="${getAssetsFile(`map/point/${imgNameList[0]}.png`)}" />
-                              </div>`
-        }
-        else {
-            height = 38
-            width = 38
-            let currColor = ''
-            const levelColor = ['rgb(96, 98, 102)', 'rgb(3, 169, 244)', 'rgb(25, 118, 210)', 'rgb(133, 201, 65)', 'rgb(217, 204, 76)', 'rgb(238, 142, 0)', 'rgb(225, 34, 52)']
-            const sewageColor: record = { Sewage1: 'rgb(133, 201, 65)', Sewage2: 'rgb(225, 34, 52)', Sewage3: 'rgb(209, 91, 255)', Sewage5: 'rgb(238, 142, 0)', SewageNone: 'rgb(75, 75, 255)' }
-            if (imgNameList[1].includes('Sewage')) currColor = sewageColor[imgNameList[1]]
-            else currColor = levelColor[Number(imgNameList[1])]
-            el.innerHTML = `<div style="width: 34px;height: 34px;background: ${currColor};border: 2px solid white;border-radius: 50%;display: flex;justify-content: center;align-items: center;">
-                              <img src="${getAssetsFile(`map/point/${imgNameList[0]}.png`)}" style="width: 26px;"/>
-                              </div>`
-            if (imgNameList[1] === '005') console.log(el, 'el')
-        }
-
-        return { dom: el, height, width }
     },
     /**
      * 处理将DOM元素转换为图片

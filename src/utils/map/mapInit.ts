@@ -1,7 +1,6 @@
-import { getAssetsFile } from '@/utils/tools'
 import MapUtil from '@/utils/map/mapUtils'
 import { useMapStore } from '@/store/map'
-import type { LayerCodeTs, LayerSelectDataChildTs, LayerSelectDataTs, LayerSelectItemTs, LayerStaticDataTs, mapPopName } from '@/types/map'
+import type { LayerCodeTs, LayerSelectDataTs, LayerSelectItemTs, LayerStaticDataTs, mapPopName } from '@/types/map'
 import { layerDictionaries } from '@/utils/map/layerSource'
 import MapPointWarningPop from '@/components/map/sewageTreatment/mapPop/MapPointWarningPop.vue'
 import AlgaeWarningPointPop from '@/components/map/sewageTreatment/mapPop/AlgaeWarningPointPop.vue'

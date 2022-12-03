@@ -2,7 +2,7 @@
  * @Author: mjh
  * @Date: 2022-09-06 10:32:34
  * @LastEditors: mjh
- * @LastEditTime: 2022-11-06 21:49:43
+ * @LastEditTime: 2022-12-02 17:20:25
  * @Description:
 -->
 <template lang="pug">
@@ -37,7 +37,7 @@ import type { PropType } from 'vue'
 import dayjs from 'dayjs'
 import type { alarmFactorTs, alarmLevelAllTs, alarmListDataTs, alarmListTs } from './types'
 import { useAnalysisStore } from '@/store/analysis'
-import type { disposalTs, popTableOptionAllTs, popTableOptionTs, queryAlarmTs, selectPanelTs } from '@/types/common'
+import type { popTableOptionAllTs, popTableOptionTs, queryAlarmTs, selectPanelTs } from '@/types/common'
 import type { waterQualityPointTs } from '@/types/waterQuality'
 import service from '@/service/api'
 const props = defineProps({
@@ -69,7 +69,7 @@ const data = reactive({
     alarmTypeCodes: '',
     alarmLevelAll: [] as alarmLevelAllTs[], // 报警级别列表
     currAlarmLevelCode: '', // 当前报警级别
-    disposalStatusList: [] as disposalTs[], // 全部处置
+    disposalStatusList: [] as any[], // 全部处置
     currFactorCodes: '', // 当前选择因子
     currDisposalStatus: '', // 当前处置类型
     tableData: [] as alarmListDataTs[],
@@ -541,7 +541,7 @@ const getAllFator = async () => {
  * @name: 获取处置列表
  */
 const getDisposalStatus = async () => {
-    const res = await service<disposalTs[]>('common/getDisposalStatus', {
+    const res = await service<any[]>('common/getDisposalStatus', {
         envTypeCodeList: ['water'],
         alarmTypeCodeList: ['automonitor_over']
     })
